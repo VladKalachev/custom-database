@@ -1,4 +1,4 @@
-const InsertCommand = require('../commands/insertCommand')
+const InsertCommand = require('../commands/InsertCommand')
 
 // INSERT { "a": 1 } INTO tableName
 

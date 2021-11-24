@@ -27,9 +27,12 @@ module.exports = class Table {
             }
           })
         .then(data => {
-          fs.writeFile(this.filePath, JSON.stringify([...data, recirdWithId]), error => {
-            if (error) reject(error)
-            resolve(recirdWithId)
+          fs.writeFile(
+            this.filePath, 
+            JSON.stringify([...data, recirdWithId]), 
+            error => {
+              if (error) reject(error)
+              resolve(recirdWithId)
           })
         })
     })
