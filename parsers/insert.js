@@ -14,7 +14,6 @@ function parseInsertCommand(commandString) {
   if (record == null) return
 
   const tableName = regexMatch.groups.tableName
-  if (tableName === '') return
 
   return new InsertCommand({
     record,
