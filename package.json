@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "script.js",
+  "jest": {
+    "setupFilesAfterEnv": ["jest-extended"]
+  },
   "scripts": {
     "start": "node script.js",
     "test": "jest --coverage"
@@ -12,6 +15,7 @@
   "license": "ISC",
   "devDependencies": {
     "jest": "^27.3.1",
+    "jest-extended": "^1.1.0",
     "mock-fs": "^5.1.2"
   },
   "dependencies": {
