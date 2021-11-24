@@ -10,12 +10,24 @@ function parseInsertCommand(commandString) {
   const regexMatch = commandString.match(REGEX)
   if(regexMatch == null) return
 
-  const record =regexMatch.groups.record
-  const tableName =regexMatch.groups.tableName
+  const record = safeParseJSON(regexMatch.groups.record)
+  if (record == null) return
+
+  const tableName = regexMatch.groups.tableName
+  if (tableName === '') return
+
   return new InsertCommand({
     record,
     tableName
   })
+}
+
+function safeParseJSON(string) {
+  try {
+    return JSON.parse(string)
+  } catch (error) {
+    return 
+  }
 }
 
 module.exports = parseInsertCommand
