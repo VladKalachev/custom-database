@@ -4,7 +4,7 @@
   "description": "",
   "main": "script.js",
   "jest": {
-    "setupFilesAfterEnv": ["jest-extended"]
+    "setupFilesAfterEnv": ["jest-extended/all"]
   },
   "scripts": {
     "start": "node script.js",

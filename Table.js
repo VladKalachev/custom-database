@@ -1,6 +1,6 @@
 const { v4: uuidV4 } = require('uuid')
 const fs = require('fs')
-const TableDoesNotExistError = require('./errors/TableDoesNotExistsError')
+const TableDoesNotExistError = require("./errors/TableDoesNotExistError")
 
 module.exports = class Table {
   constructor(tableName) {
