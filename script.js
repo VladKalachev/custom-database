@@ -1,12 +1,33 @@
-const insertParser = require('./parsers/insert')
+const readline = require('readline')
+const parseCommand = require('./parseCommand')
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+})
 
-const insertCommand = insertParser('INSERT { "a": 1 } INTO test')
+async function start() {
+  while(true) {
+    try {
+      const commandString = await waitForCommand()
+      printFormattedJSON(await parseCommand(commandString))
+    } catch (e) {
+      console.error(`${e.name}: ${e.message}`)
+    }
+  }
 
-async function main() {
-  console.log(await insertCommand.perform())
 }
 
-main()
+start()
+
+function waitForCommand() {
+  return new Promise(resolve => {
+    rl.question("> ", resolve)
+  })
+}
+
+function printFormattedJSON(string) {
+  console.log(JSON.stringify(string, null, 2))
+}
 
 // 1. Get user input
 // 1.2. Choose our parser
