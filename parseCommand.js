@@ -1,8 +1,10 @@
 const parseInsertCommand = require('./parsers/insert')
+const parseSelectCommand = require("./parsers/select")
 const InvalidCommandError = require('./errors/InvalidCommandError')
 
 const parsers = [
-  parseInsertCommand
+  parseInsertCommand,
+  parseSelectCommand,
 ]
 
 module.exports = async function parseCommand(commandString) {
