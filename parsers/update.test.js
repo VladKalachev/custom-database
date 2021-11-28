@@ -1,25 +1,51 @@
-const UpdateCommand = require("../commands/UpdateCommand")
-const safeParseJSON = require("../utils/safeParseJSON")
+const parseUpdateCommand = require("./update")
 
-const UPDATE_COMMAND = "UPDATE"
-const BEFORE_TABLE_COMMAND = "IN"
-const REGEX = new RegExp(
-  `${UPDATE_COMMAND}\\s+(?<properties>{.*})\\s+${BEFORE_TABLE_COMMAND}\\s+(?<tableName>\\S+)`
-)
+describe("With valid command", () => {
+  const command = 'UPDATE { "a": 1, "b": 2 } IN table'
 
-function parseUpdateCommand(commandString) {
-  const regexMatch = commandString.match(REGEX)
-  if (regexMatch == null) return
-
-  const properties = safeParseJSON(regexMatch.groups.properties)
-  if (properties == null) return
-
-  const tableName = regexMatch.groups.tableName
-
-  return new UpdateCommand({
-    tableName,
-    properties,
+  test("It returns the correct UpdateCommand", () => {
+    const updateCommand = parseUpdateCommand(command)
+    expect(updateCommand.properties).toEqual({ a: 1, b: 2 })
+    expect(updateCommand.table.tableName).toBe("table")
   })
-}
+})
 
-module.exports = parseUpdateCommand
+describe("With invalid properties", () => {
+  const command = "UPDATE { asdfasdf } IN table"
+
+  test("It returns undefined", () => {
+    expect(parseUpdateCommand(command)).toBeUndefined()
+  })
+})
+
+describe("With no table name", () => {
+  const command = 'UPDATE { "a": 1, "b": 2 } IN'
+
+  test("It returns undefined", () => {
+    expect(parseUpdateCommand(command)).toBeUndefined()
+  })
+})
+
+describe("With no UPDATE clause", () => {
+  const command = '{ "a": 1, "b": 2 } IN table'
+
+  test("It returns undefined", () => {
+    expect(parseUpdateCommand(command)).toBeUndefined()
+  })
+})
+
+describe("With no IN clause", () => {
+  const command = 'UPDATE { "a": 1, "b": 2 } table'
+
+  test("It returns undefined", () => {
+    expect(parseUpdateCommand(command)).toBeUndefined()
+  })
+})
+
+describe("With no properties", () => {
+  const command = "UPDATE IN table"
+
+  test("It returns undefined", () => {
+    expect(parseUpdateCommand(command)).toBeUndefined()
+  })
+})
