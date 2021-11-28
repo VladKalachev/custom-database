@@ -1,5 +1,5 @@
-const { v4: uuidV4 } = require('uuid')
-const fs = require('fs')
+const { v4: uuidV4 } = require("uuid")
+const fs = require("fs")
 const TableDoesNotExistError = require("./errors/TableDoesNotExistError")
 
 module.exports = class Table {
@@ -11,29 +11,35 @@ module.exports = class Table {
     return `data/${this.tableName}.json`
   }
 
+  overwriteTable(data) {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(this.filePath, JSON.stringify(data), error => {
+        if (error) return reject(error)
+        resolve()
+      })
+    })
+  }
+
   insertRecord(record) {
-    // 1. Give the recird an id
-      // 2. Get current data
-        // a. If the tabke exusts add the recird ti the end if the table
-        // b. If the tabke dies not exist then create it and add the record
-    const recirdWithId = { _id: uuidV4(), ...record }
+    const recordWithId = { _id: uuidV4(), ...record }
     return new Promise((resolve, reject) => {
       this.readData()
         .catch(e => {
-            if(e instanceof TableDoesNotExistError) {
-              return []
-            } else {
-              reject(e)
-            }
-          })
+          if (e instanceof TableDoesNotExistError) {
+            return []
+          } else {
+            reject(e)
+          }
+        })
         .then(data => {
           fs.writeFile(
-            this.filePath, 
-            JSON.stringify([...data, recirdWithId]), 
+            this.filePath,
+            JSON.stringify([...data, recordWithId]),
             error => {
-              if (error) reject(error)
-              resolve(recirdWithId)
-          })
+              if (error) return reject(error)
+              resolve(recordWithId)
+            }
+          )
         })
     })
   }
