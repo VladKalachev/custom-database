@@ -1,11 +1,14 @@
+const InvalidCommandError = require('./errors/InvalidCommandError')
 const parseInsertCommand = require("./parsers/insert")
 const parseSelectCommand = require("./parsers/select")
+const parseUpdateCommand = require("./parsers/update")
 const parseWhereCommand = require("./parsers/where")
-const InvalidCommandError = require('./errors/InvalidCommandError')
+
 
 const parsers = [
   parseInsertCommand,
   parseSelectCommand,
+  parseUpdateCommand,
 ]
 
 module.exports = async function parseCommand(commandString) {
