@@ -23,4 +23,3 @@ function parseInsertCommand(commandString) {
 }
 
 module.exports = parseInsertCommand
-
